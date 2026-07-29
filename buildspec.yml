@@ -1,17 +1,16 @@
 version: 0.2
-
 phases:
   pre_build:
     commands:
       - echo "Logging in to Amazon ECR..."
-      - AWS_ACCOUNT_ID="<ACCOUNT_ID>"
+      - AWS_ACCOUNT_ID="585008043636"
       - AWS_REGION="us-east-1"
       - REPO_NAME="cicd-lab-app"
       - ECR_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPO_NAME}"
       - aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
       - echo "Computing short git commit SHA..."
       - COMMIT_SHA=$(echo $CODEBUILD_RESOLVED_COMMIT_ID | cut -c 1-7)
-      - echo "Building with Commit SHA: ${COMMIT_SHA}"
+      - 'echo "Building with Commit SHA: ${COMMIT_SHA}"'
   build:
     commands:
       - echo "Building Docker image..."
@@ -22,7 +21,6 @@ phases:
       - docker push ${ECR_URI}:${COMMIT_SHA}
       - docker push ${ECR_URI}:latest
       - echo "Build completed successfully."
-
 artifacts:
   files:
     - appspec.yml
