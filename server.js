@@ -3,7 +3,7 @@ const http = require('http');
 const PORT = process.env.PORT || 80;
 const COMMIT_SHA = process.env.COMMIT_SHA || 'development';
 
-const html = `<!DOCTYPE html>
+const html = `<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8">
