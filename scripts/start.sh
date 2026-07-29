@@ -2,7 +2,7 @@
 set -e
 
 AWS_REGION="us-east-1"
-AWS_ACCOUNT_ID="<ACCOUNT_ID>"
+AWS_ACCOUNT_ID="585008043636"
 REPO_NAME="cicd-lab-app"
 IMAGE_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPO_NAME}:latest"
 
