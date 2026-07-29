@@ -9,7 +9,8 @@ phases:
       - ECR_URI="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPO_NAME}"
       - aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
       - echo "Computing short git commit SHA..."
-      - COMMIT_SHA=$(echo $CODEBUILD_RESOLVED_COMMIT_ID | cut -c 1-7)
+      - COMMIT_SHA=$(echo "${CODEBUILD_RESOLVED_COMMIT_ID}" | cut -c 1-7)
+      - if [ -z "${COMMIT_SHA}" ]; then COMMIT_SHA=$(git rev-parse --short HEAD 2>/dev/null || echo "latest"); fi
       - 'echo "Building with Commit SHA: ${COMMIT_SHA}"'
   build:
     commands:
@@ -20,7 +21,7 @@ phases:
       - echo "Pushing Docker images to ECR..."
       - docker push ${ECR_URI}:${COMMIT_SHA}
       - docker push ${ECR_URI}:latest
-      - echo "Build completed successfully."
+      - echo "Building completed successfully."
 artifacts:
   files:
     - appspec.yml
